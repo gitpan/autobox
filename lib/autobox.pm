@@ -11,7 +11,7 @@ use Scalar::Util;
 use Scope::Guard;
 use Storable;
 
-our $VERSION = '2.55';
+our $VERSION = '2.60';
 
 XSLoader::load 'autobox', $VERSION;
 
@@ -102,8 +102,9 @@ sub _universalize ($) {
     return unless (defined $class);
     {
         no strict 'refs';
-        *{"$class\::can"} = sub { shift; UNIVERSAL::can($class, @_) } unless (*{"$class\::can"}{CODE});
-        *{"$class\::isa"} = sub { shift; UNIVERSAL::isa($class, @_) } unless (*{"$class\::isa"}{CODE});
+	# don't interfere with STRING->can and STRING->isa: https://rt.cpan.org/Ticket/Display.html?id=55565
+        *{"$class\::autobox_can"} = sub { shift; $class->can(@_) } unless (*{"$class\::autobox_can"}{CODE});
+        *{"$class\::autobox_isa"} = sub { shift; $class->isa(@_) } unless (*{"$class\::autobox_isa"}{CODE});
     }
 }
 

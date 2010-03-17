@@ -1,5 +1,14 @@
 Revision history for Perl extension autobox
 
+2.60  Wed Mar 17 16:34:56 2010
+    - fix RT #46814 (thanks Tye McQueen)
+      - added t/rt_46814
+    - fix RT #49273 (thanks Daniel Austin)
+    - fix RT #55565 (thanks Schwern)
+    - fix RT #55652 (thanks Schwern)
+      - $native->isa and $native->can must now be called as $native->autobox_isa and $native->autobox_can
+      - added t/rt_55652
+
 2.55  Sun May 25 03:20:54 2008
     - fix MANIFEST again - restore Changes
 

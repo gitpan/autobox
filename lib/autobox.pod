@@ -38,10 +38,10 @@ autobox - call methods on native types
         my $plus_five = (\&add)->curry()->(5);
         my $minus_three = sub { $_[0] - $_[1] }->reverse->curry->(3);
 
-    # can() and isa() work as expected
+    # autobox_can() and autobox_isa() work like can() and isa()
 
-        if ("Hello, world!"->can('foo')) ...
-        if (3.1415927->isa('SCALAR')) ...
+        if ("Hello, world!"->autobox_can('foo')) ...
+        if (3.1415927->autobox_isa('SCALAR')) ...
 
 =head1 DESCRIPTION
 
@@ -618,12 +618,12 @@ to C<print()>:
 
 =head3 VERSION, import and unimport
 
-Although C<can> and C<isa> work as expected for autoboxed values, the C<VERSION> method doesn't.
+Although C<autobox_can> and C<autobox_isa> work as expected for autoboxed values, the C<VERSION> method doesn't.
 Thus, while these work:
 
-    [ ... ]->can('pop')
+    [ ... ]->autobox_can('pop')
 
-    3.1415->isa('MyScalar')
+    3.1415->autobox_isa('MyScalar')
 
 This doesn't:
 
@@ -675,7 +675,7 @@ Note that the C<eval BLOCK> form works as expected:
         
 =head1 VERSION
 
-2.55
+2.60
 
 =head1 SEE ALSO
 
@@ -691,7 +691,7 @@ Note that the C<eval BLOCK> form works as expected:
 
 =item * L<Moose::Autobox>
 
-=item * L<Perl6::Contexts|Perl6::Contexts>
+=item * L<perl5i|perl5i>
 
 =item * L<Scalar::Properties|Scalar::Properties>
 
@@ -701,11 +701,11 @@ Note that the C<eval BLOCK> form works as expected:
 
 =head1 AUTHOR
     
-chocolateboy <chocolate.boy@email.com>
+chocolateboy <chocolate@cpan.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2003-2008, chocolateboy.
+Copyright (c) 2003-2010, chocolateboy.
 
 This module is free software. It may be used, redistributed
 and/or modified under the same terms as Perl itself.
