@@ -475,24 +475,24 @@ my $undef_error     = qr{Can't call method "[^"]+" on an undefined value};
         is([ 0 .. 9 ]->test(),     'ARRAY',  'nested (inner): ARRAY ref');
         is($array->test(),         'ARRAY',  'nested (inner): $array');
 
-        ok('Hello, world'->autobox_isa('SCALAR'), 'nested (inner): single quoted string literal isa(OUTER)');
-        ok("Hello, world"->autobox_isa('SCALAR'), 'nested (inner): double quoted string literal isa(OUTER)');
-        ok($string->autobox_isa('SCALAR'),        'nested (inner): $string isa(OUTER)');
-        ok([ 0 .. 9 ]->autobox_isa('ARRAY'),      'nested (inner): ARRAY ref isa(OUTER)');
-        ok($array->autobox_isa('ARRAY'),          'nested (inner): $array isa(OUTER)');
+        ok('Hello, world'->autobox_class->isa('SCALAR'), 'nested (inner): single quoted string literal isa(OUTER)');
+        ok("Hello, world"->autobox_class->isa('SCALAR'), 'nested (inner): double quoted string literal isa(OUTER)');
+        ok($string->autobox_class->isa('SCALAR'),        'nested (inner): $string isa(OUTER)');
+        ok([ 0 .. 9 ]->autobox_class->isa('ARRAY'),      'nested (inner): ARRAY ref isa(OUTER)');
+        ok($array->autobox_class->isa('ARRAY'),          'nested (inner): $array isa(OUTER)');
 
-        ok('Hello, world'->autobox_isa('MyNamespace::SCALAR'), 'nested (inner): single quoted string literal isa(INNER)');
-        ok("Hello, world"->autobox_isa('MyNamespace::SCALAR'), 'nested (inner): double quoted string literal isa(INNER)');
-        ok($string->autobox_isa('MyNamespace::SCALAR'),        'nested (inner): $string isa(INNER)');
-        ok([ 0 .. 9 ]->autobox_isa('MyNamespace::ARRAY'),      'nested (inner): ARRAY ref isa(INNER)');
-        ok($array->autobox_isa('MyNamespace::ARRAY'),          'nested (inner): $array isa(INNER)');
+        ok('Hello, world'->autobox_class->isa('MyNamespace::SCALAR'), 'nested (inner): single quoted string literal isa(INNER)');
+        ok("Hello, world"->autobox_class->isa('MyNamespace::SCALAR'), 'nested (inner): double quoted string literal isa(INNER)');
+        ok($string->autobox_class->isa('MyNamespace::SCALAR'),        'nested (inner): $string isa(INNER)');
+        ok([ 0 .. 9 ]->autobox_class->isa('MyNamespace::ARRAY'),      'nested (inner): ARRAY ref isa(INNER)');
+        ok($array->autobox_class->isa('MyNamespace::ARRAY'),          'nested (inner): $array isa(INNER)');
     }
 
-    is('Hello, world'->autobox_isa('MyNamespace::SCALAR'), '', 'nested (outer): single quoted string literal !isa(INNER)');
-    is("Hello, world"->autobox_isa('MyNamespace::SCALAR'), '', 'nested (outer): double quoted string literal !isa(INNER)');
-    is($string->autobox_isa('MyNamespace::SCALAR'),        '', 'nested (outer): $string !isa(INNER)');
-    is([ 0 .. 9 ]->autobox_isa('MyNamespace::ARRAY'),      '', 'nested (outer): ARRAY ref !isa(INNER)');
-    is($array->autobox_isa('MyNamespace::ARRAY'),          '', 'nested (outer): $array !isa(INNER)');
+    is('Hello, world'->autobox_class->isa('MyNamespace::SCALAR'), '', 'nested (outer): single quoted string literal !isa(INNER)');
+    is("Hello, world"->autobox_class->isa('MyNamespace::SCALAR'), '', 'nested (outer): double quoted string literal !isa(INNER)');
+    is($string->autobox_class->isa('MyNamespace::SCALAR'),        '', 'nested (outer): $string !isa(INNER)');
+    is([ 0 .. 9 ]->autobox_class->isa('MyNamespace::ARRAY'),      '', 'nested (outer): ARRAY ref !isa(INNER)');
+    is($array->autobox_class->isa('MyNamespace::ARRAY'),          '', 'nested (outer): $array !isa(INNER)');
 
     is({ 0 .. 9 }->test(), 'HASH', 'nested (outer): HASH ref');
     is($hash->test(),      'HASH', 'nested (outer): $hash');
@@ -506,29 +506,29 @@ my $undef_error     = qr{Can't call method "[^"]+" on an undefined value};
 {
     use autobox;
 
-    is(3->autobox_can('test'),    \&SCALAR::test, 'can: integer literal');
-    is((-3)->autobox_can('test'), \&SCALAR::test, 'can: negative integer literal');
-    is((+3)->autobox_can('test'), \&SCALAR::test, 'can: positive integer literal');
-    is($int->autobox_can('test'), \&SCALAR::test, 'can: $integer');
+    is(3->autobox_class->can('test'),    \&SCALAR::test, 'can: integer literal');
+    is((-3)->autobox_class->can('test'), \&SCALAR::test, 'can: negative integer literal');
+    is((+3)->autobox_class->can('test'), \&SCALAR::test, 'can: positive integer literal');
+    is($int->autobox_class->can('test'), \&SCALAR::test, 'can: $integer');
 
-    is(3.1415927->autobox_can('test'),    \&SCALAR::test, 'can: float literal');
-    is((-3.1415927)->autobox_can('test'), \&SCALAR::test, 'can: negative float literal');
-    is((+3.1415927)->autobox_can('test'), \&SCALAR::test, 'can: positive float literal');
-    is($float->autobox_can('test'),       \&SCALAR::test, 'can: $float');
+    is(3.1415927->autobox_class->can('test'),    \&SCALAR::test, 'can: float literal');
+    is((-3.1415927)->autobox_class->can('test'), \&SCALAR::test, 'can: negative float literal');
+    is((+3.1415927)->autobox_class->can('test'), \&SCALAR::test, 'can: positive float literal');
+    is($float->autobox_class->can('test'),       \&SCALAR::test, 'can: $float');
 
-    is('Hello, world'->autobox_can('test'), \&SCALAR::test, 'can: single quoted string literal');
-    is("Hello, world"->autobox_can('test'), \&SCALAR::test, 'can: double quoted string literal');
-    is($string->autobox_can('test'),        \&SCALAR::test, 'can: $string');
+    is('Hello, world'->autobox_class->can('test'), \&SCALAR::test, 'can: single quoted string literal');
+    is("Hello, world"->autobox_class->can('test'), \&SCALAR::test, 'can: double quoted string literal');
+    is($string->autobox_class->can('test'),        \&SCALAR::test, 'can: $string');
 
-    is([ 0 .. 9 ]->autobox_can('test'), \&ARRAY::test, 'can: ARRAY ref');
-    is($array->autobox_can('test'),     \&ARRAY::test, 'can: $array');
+    is([ 0 .. 9 ]->autobox_class->can('test'), \&ARRAY::test, 'can: ARRAY ref');
+    is($array->autobox_class->can('test'),     \&ARRAY::test, 'can: $array');
 
-    is({ 0 .. 9 }->autobox_can('test'), \&HASH::test, 'can: HASH ref');
-    is($hash->autobox_can('test'),      \&HASH::test, 'can: $hash');
+    is({ 0 .. 9 }->autobox_class->can('test'), \&HASH::test, 'can: HASH ref');
+    is($hash->autobox_class->can('test'),      \&HASH::test, 'can: $hash');
 
-    is((\&add)->autobox_can('test'), \&CODE::test, 'can: CODE ref');
-    is(sub { $_[0] + $_[1] }->autobox_can('test'), \&CODE::test, 'can: ANON sub');
-    is($code->autobox_can('test'), \&CODE::test, 'can: $code');
+    is((\&add)->autobox_class->can('test'), \&CODE::test, 'can: CODE ref');
+    is(sub { $_[0] + $_[1] }->autobox_class->can('test'), \&CODE::test, 'can: ANON sub');
+    is($code->autobox_class->can('test'), \&CODE::test, 'can: $code');
 }
 
 # test isa: also ensures isa() isn't simply
@@ -536,77 +536,77 @@ my $undef_error     = qr{Can't call method "[^"]+" on an undefined value};
 {
     use autobox;
 
-    ok(3->autobox_isa('SCALAR'),    'isa SCALAR: integer literal');
-    ok(3->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: integer literal');
-    is(3->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: integer literal');
+    ok(3->autobox_class->isa('SCALAR'),    'isa SCALAR: integer literal');
+    ok(3->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: integer literal');
+    is(3->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: integer literal');
 
-    ok((-3)->autobox_isa('SCALAR'),    'isa SCALAR: negative integer literal');
-    ok((-3)->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: negative integer literal');
-    is((-3)->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: negative integer literal');
+    ok((-3)->autobox_class->isa('SCALAR'),    'isa SCALAR: negative integer literal');
+    ok((-3)->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: negative integer literal');
+    is((-3)->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: negative integer literal');
 
-    ok((+3)->autobox_isa('SCALAR'),    'isa SCALAR: positive integer literal');
-    ok((+3)->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: positive integer literal');
-    is((+3)->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: positive integer literal');
+    ok((+3)->autobox_class->isa('SCALAR'),    'isa SCALAR: positive integer literal');
+    ok((+3)->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: positive integer literal');
+    is((+3)->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: positive integer literal');
 
-    ok($int->autobox_isa('SCALAR'),    'isa SCALAR: $integer');
-    ok($int->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: $integer');
-    is($int->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: $integer');
+    ok($int->autobox_class->isa('SCALAR'),    'isa SCALAR: $integer');
+    ok($int->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: $integer');
+    is($int->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: $integer');
 
-    ok(3.1415927->autobox_isa('SCALAR'),    'isa SCALAR: float literal');
-    ok(3.1415927->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: float literal');
-    is(3.1415927->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: float literal');
+    ok(3.1415927->autobox_class->isa('SCALAR'),    'isa SCALAR: float literal');
+    ok(3.1415927->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: float literal');
+    is(3.1415927->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: float literal');
 
-    ok((-3.1415927)->autobox_isa('SCALAR'),    'isa SCALAR: negative float literal');
-    ok((-3.1415927)->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: negative float literal');
-    is((-3.1415927)->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: negative float literal');
+    ok((-3.1415927)->autobox_class->isa('SCALAR'),    'isa SCALAR: negative float literal');
+    ok((-3.1415927)->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: negative float literal');
+    is((-3.1415927)->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: negative float literal');
 
-    ok((+3.1415927)->autobox_isa('SCALAR'),    'isa SCALAR: positive float literal');
-    ok((+3.1415927)->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: positive float literal');
-    is((+3.1415927)->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: positive float literal');
+    ok((+3.1415927)->autobox_class->isa('SCALAR'),    'isa SCALAR: positive float literal');
+    ok((+3.1415927)->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: positive float literal');
+    is((+3.1415927)->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: positive float literal');
 
-    ok($float->autobox_isa('SCALAR'),    'isa SCALAR: $float');
-    ok($float->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: $float');
-    is($float->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: $float');
+    ok($float->autobox_class->isa('SCALAR'),    'isa SCALAR: $float');
+    ok($float->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: $float');
+    is($float->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: $float');
 
-    ok('Hello, world'->autobox_isa('SCALAR'),    'isa SCALAR: single quoted string literal');
-    ok('Hello, world'->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: single quoted string literal');
-    is('Hello, world'->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: single quoted string literal');
+    ok('Hello, world'->autobox_class->isa('SCALAR'),    'isa SCALAR: single quoted string literal');
+    ok('Hello, world'->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: single quoted string literal');
+    is('Hello, world'->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: single quoted string literal');
 
-    ok("Hello, world"->autobox_isa('SCALAR'),    'isa SCALAR: double quoted string literal');
-    ok("Hello, world"->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: double quoted string literal');
-    is("Hello, world"->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: double quoted string literal');
+    ok("Hello, world"->autobox_class->isa('SCALAR'),    'isa SCALAR: double quoted string literal');
+    ok("Hello, world"->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: double quoted string literal');
+    is("Hello, world"->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: double quoted string literal');
 
-    ok($string->autobox_isa('SCALAR'),    'isa SCALAR: $string');
-    ok($string->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: $string');
-    is($string->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: $string');
+    ok($string->autobox_class->isa('SCALAR'),    'isa SCALAR: $string');
+    ok($string->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: $string');
+    is($string->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: $string');
 
-    ok([ 0 .. 9 ]->autobox_isa('ARRAY'),     'isa ARRAY: ARRAY ref');
-    ok([ 0 .. 9 ]->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: ARRAY ref');
-    is([ 0 .. 9 ]->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: ARRAY ref');
+    ok([ 0 .. 9 ]->autobox_class->isa('ARRAY'),     'isa ARRAY: ARRAY ref');
+    ok([ 0 .. 9 ]->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: ARRAY ref');
+    is([ 0 .. 9 ]->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: ARRAY ref');
 
-    ok($array->autobox_isa('ARRAY'),     'isa ARRAY: $array');
-    ok($array->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: $array');
-    is($array->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: $array');
+    ok($array->autobox_class->isa('ARRAY'),     'isa ARRAY: $array');
+    ok($array->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: $array');
+    is($array->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: $array');
 
-    ok({ 0 .. 9 }->autobox_isa('HASH'),      'isa HASH: HASH ref');
-    ok({ 0 .. 9 }->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: HASH ref');
-    is({ 0 .. 9 }->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: HASH ref');
+    ok({ 0 .. 9 }->autobox_class->isa('HASH'),      'isa HASH: HASH ref');
+    ok({ 0 .. 9 }->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: HASH ref');
+    is({ 0 .. 9 }->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: HASH ref');
 
-    ok($hash->autobox_isa('HASH'),      'isa HASH: $hash');
-    ok($hash->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: $hash');
-    is($hash->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: $hash');
+    ok($hash->autobox_class->isa('HASH'),      'isa HASH: $hash');
+    ok($hash->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: $hash');
+    is($hash->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: $hash');
 
-    ok((\&add)->autobox_isa('CODE'),      'isa CODE: CODE ref');
-    ok((\&add)->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: CODE ref');
-    is((\&add)->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: CODE ref');
+    ok((\&add)->autobox_class->isa('CODE'),      'isa CODE: CODE ref');
+    ok((\&add)->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: CODE ref');
+    is((\&add)->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: CODE ref');
 
-    ok(sub { $_[0] + $_[1] }->autobox_isa('CODE'), 'isa CODE: ANON sub');
-    ok(sub { $_[0] + $_[1] }->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: ANON sub');
-    is(sub { $_[0] + $_[1] }->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: ANON sub');
+    ok(sub { $_[0] + $_[1] }->autobox_class->isa('CODE'), 'isa CODE: ANON sub');
+    ok(sub { $_[0] + $_[1] }->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: ANON sub');
+    is(sub { $_[0] + $_[1] }->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: ANON sub');
 
-    ok($code->autobox_isa('CODE'),      'isa CODE: $code');
-    ok($code->autobox_isa('UNIVERSAL'), 'isa UNIVERSAL: $code');
-    is($code->autobox_isa('UNKNOWN'), '', 'isa UNKNOWN: $code');
+    ok($code->autobox_class->isa('CODE'),      'isa CODE: $code');
+    ok($code->autobox_class->isa('UNIVERSAL'), 'isa UNIVERSAL: $code');
+    is($code->autobox_class->isa('UNKNOWN'), '', 'isa UNKNOWN: $code');
 }
 
 # test VERSION
@@ -651,17 +651,17 @@ my $undef_error     = qr{Can't call method "[^"]+" on an undefined value};
     eval { $undef->test() };
     ok(($@ && ($@ =~ /^$undef_error/)), 'undef: $undef->test()');
 
-    eval { undef->autobox_isa('SCALAR') };
-    ok(($@ && ($@ =~ /^$undef_error/)), 'undef: undef->autobox_isa(...)');
+    eval { undef->autobox_class->isa('SCALAR') };
+    ok(($@ && ($@ =~ /^$undef_error/)), 'undef: undef->autobox_class->isa(...)');
 
-    eval { $undef->autobox_isa('SCALAR') };
-    ok(($@ && ($@ =~ /^$undef_error/)), 'undef: $undef->autobox_isa(...)');
+    eval { $undef->autobox_class->isa('SCALAR') };
+    ok(($@ && ($@ =~ /^$undef_error/)), 'undef: $undef->autobox_class->isa(...)');
 
-    eval { undef->autobox_can('test') };
-    ok(($@ && ($@ =~ /^$undef_error/)), 'undef: undef->autobox_can(...)');
+    eval { undef->autobox_class->can('test') };
+    ok(($@ && ($@ =~ /^$undef_error/)), 'undef: undef->autobox_class->can(...)');
 
-    eval { $undef->autobox_can('test') };
-    ok(($@ && ($@ =~ /^$undef_error/)), 'undef: $undef->autobox_can(...)');
+    eval { $undef->autobox_class->can('test') };
+    ok(($@ && ($@ =~ /^$undef_error/)), 'undef: $undef->autobox_class->can(...)');
 }
 
 # test undef 2: not even if DEFAULT is specified
@@ -674,17 +674,17 @@ my $undef_error     = qr{Can't call method "[^"]+" on an undefined value};
     eval { $undef->test() };
     ok(($@ && ($@ =~ /^$undef_error/)), 'undef with DEFAULT: $undef->test()');
 
-    eval { undef->autobox_isa('SCALAR') };
-    ok(($@ && ($@ =~ /^$undef_error/)), 'undef with DEFAULT: undef->autobox_isa(...)');
+    eval { undef->autobox_class->isa('SCALAR') };
+    ok(($@ && ($@ =~ /^$undef_error/)), 'undef with DEFAULT: undef->autobox_class->isa(...)');
 
-    eval { $undef->autobox_isa('SCALAR') };
-    ok(($@ && ($@ =~ /^$undef_error/)), 'undef with DEFAULT: $undef->autobox_isa(...)');
+    eval { $undef->autobox_class->isa('SCALAR') };
+    ok(($@ && ($@ =~ /^$undef_error/)), 'undef with DEFAULT: $undef->autobox_class->isa(...)');
 
-    eval { undef->autobox_can('test') };
-    ok(($@ && ($@ =~ /^$undef_error/)), 'undef with DEFAULT: undef->autobox_can(...)');
+    eval { undef->autobox_class->can('test') };
+    ok(($@ && ($@ =~ /^$undef_error/)), 'undef with DEFAULT: undef->autobox_class->can(...)');
 
-    eval { $undef->autobox_can('test') };
-    ok(($@ && ($@ =~ /^$undef_error/)), 'undef with DEFAULT: $undef->autobox_can(...)');
+    eval { $undef->autobox_class->can('test') };
+    ok(($@ && ($@ =~ /^$undef_error/)), 'undef with DEFAULT: $undef->autobox_class->can(...)');
 }
 
 # test undef: but undef support can be enabled
@@ -710,8 +710,8 @@ my $undef_error     = qr{Can't call method "[^"]+" on an undefined value};
 }
 
 # make sure enterscope/leavescope have popped the stack back so that the default op_method_named is restored
-(my $isa_error = $error) =~ s/test/autobox_isa/;
-eval { 3->autobox_isa('SCALAR') };
-ok(($@ && ($@ =~ /^$isa_error/)), "3->autobox_isa('SCALAR') raises an exception outside a lexical scope in which autobox is loaded");
+(my $isa_error = $error) =~ s/test/autobox_class/;
+eval { 3->autobox_class->isa('SCALAR') };
+ok(($@ && ($@ =~ /^$isa_error/)), "3->autobox_class->isa('SCALAR') raises an exception outside a lexical scope in which autobox is loaded");
 
 1;
