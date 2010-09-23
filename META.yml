@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               autobox
-version:            2.70
+version:            2.71
 abstract:           call methods on native types
 author:
     - chocolateboy <chocolate@cpan.org>
@@ -8,13 +8,17 @@ license:            perl
 distribution_type:  module
 configure_requires:
     ExtUtils::MakeMaker:  0
+build_requires:
+    ExtUtils::MakeMaker:  0
 requires:
-    Scope::Guard:  0.03
+    Scope::Guard:  0.20
+resources:
+    repository:  http://github.com/chocolateboy/autobox
 no_index:
     directory:
         - t
         - inc
-generated_by:       ExtUtils::MakeMaker version 6.48
+generated_by:       ExtUtils::MakeMaker version 6.56
 meta-spec:
     url:      http://module-build.sourceforge.net/META-spec-v1.4.html
     version:  1.4
