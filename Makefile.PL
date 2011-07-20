@@ -20,7 +20,8 @@ if ($Config{gccversion}) {
 WriteMakefile(
     NAME            => 'autobox',
     VERSION_FROM    => 'lib/autobox.pm',
-    INSTALLDIRS     => 'perl',
+    # compatibility in case module was previously installed to lib
+    INSTALLDIRS     => ($] >= 5.014 ? 'site' : 'perl'),
     PREREQ_PM       => {
         'Scope::Guard'   => '0.20',
     },
