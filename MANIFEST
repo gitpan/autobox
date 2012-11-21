@@ -29,3 +29,4 @@ t/scalar.t
 t/type.t
 t/unmerge.t
 t/version.t
+META.json                                Module JSON meta-data (added by MakeMaker)
