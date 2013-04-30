@@ -11,10 +11,10 @@ use Scalar::Util;
 use Scope::Guard;
 use Storable;
 
-our $VERSION = '2.78';
+our $VERSION = '2.79';
 
 # Perform (XS) cleanup on global destruction (DESTROY is defined in autobox.xs).
-# END blocks don't work for this: see see https://rt.cpan.org/Ticket/Display.html?id=80400
+# END blocks don't work for this: see https://rt.cpan.org/Ticket/Display.html?id=80400
 # according to perlvar, package variables are garbage collected after END blocks
 our $__GLOBAL_DESTRUCTION_MONITOR__ = bless {};
 
@@ -85,7 +85,7 @@ sub _generate_class($) {
     # rather than in the ISA hierarchy with its attendant AUTOLOAD-related overhead
     if (@$isa == 1) {
         my $class = $isa->[0];
-        _make_class_accessor($class); # nop if it's already been universalized
+        _make_class_accessor($class); # NOP if it has already been added
         return $class;
     }
 
@@ -187,7 +187,8 @@ sub _expand_namespace($$) {
 
 # enable some flavour of autoboxing in the current scope
 sub import {
-    my ($class, %args) = @_;
+    my $class = shift;
+    my %args = ((@_ == 1) && _isa($_[0], 'HASH')) ? %{shift()} : @_; # hash or hashref
     my $debug = delete $args{DEBUG};
 
     %args = %DEFAULT unless (%args); # wait till DEBUG has been deleted
@@ -224,7 +225,7 @@ sub import {
             #
             # undefs are winnowed out by _expand_namespace
 
-            next if (@{$args{$type}}); 
+            next if (@{$args{$type}});
             push @{$args{$type}}, map { _expand_namespace($_, $type) } @$default;
         }
     }
@@ -268,7 +269,7 @@ sub import {
         Carp::confess("unrecognized option: '", (defined $type ? $type : '<undef>'), "'") unless ($TYPES{$type});
 
         my (@isa, $class);
-       
+
         if ($class = $bindings->{$type}) {
             @isa = $synthetic{$class} ? _get_isa($class) : ($class);
         }
@@ -282,7 +283,7 @@ sub import {
     # replace each array ref of classes with the name of the generated class.
     # if there's only one class in the type's @ISA (e.g. SCALAR => 'MyScalar') then
     # that class is used; otherwise a shim class whose @ISA contains the two or more classes
-    # is created 
+    # is created
 
     for my $type (keys %$bindings) {
         my $isa = $bindings->{$type};
@@ -292,7 +293,7 @@ sub import {
             delete $bindings->{$type};
         } else {
             # associate the synthetic/single class with the specified type
-            $bindings->{$type} = _generate_class($isa); 
+            $bindings->{$type} = _generate_class($isa);
         }
     }
 
@@ -348,7 +349,7 @@ sub import {
 # delete one or more bindings; if none remain, disable autobox in the current scope
 #
 # note: if bindings remain, we need to create a new hash (initially a clone of the current
-# hash) so that the previous hash (if any) is not contaminated by new deletions(s)
+# hash) so that the previous hash (if any) is not contaminated by new deletion(s)
 #
 #   use autobox;
 #
